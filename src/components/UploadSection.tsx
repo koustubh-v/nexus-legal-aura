@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { NeonButton } from "@/components/ui/neon-button";
 import { Upload, FileText, CheckCircle, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export const UploadSection = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [uploadComplete, setUploadComplete] = useState(false);
+  const { toast } = useToast();
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -19,20 +23,67 @@ export const UploadSection = () => {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    // Simulate upload
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileUpload(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileUpload = (file: File) => {
+    // Validate file type
+    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    if (!allowedTypes.includes(file.type)) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload a PDF, DOC, DOCX, or TXT file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (50MB limit)
+    if (file.size > 50 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please upload a file smaller than 50MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploadedFile(file);
     setIsUploading(true);
     setUploadProgress(0);
+    setUploadComplete(false);
     
+    // Simulate upload progress
     const interval = setInterval(() => {
       setUploadProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(() => setIsUploading(false), 1000);
+          setTimeout(() => {
+            setIsUploading(false);
+            setUploadComplete(true);
+            toast({
+              title: "Upload complete!",
+              description: `${file.name} has been successfully analyzed.`,
+            });
+          }, 500);
           return 100;
         }
         return prev + 10;
       });
     }, 200);
+  };
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      handleFileUpload(e.target.files[0]);
+    }
+  };
+
+  const handleBrowseClick = () => {
+    document.getElementById('file-input')?.click();
   };
 
   return (
@@ -52,16 +103,24 @@ export const UploadSection = () => {
 
         {/* Upload Box */}
         <div
-          className={`relative glass-card p-12 text-center border-2 border-dashed transition-all duration-300 ${
+          className={`relative glass-card p-12 text-center border-2 border-dashed transition-all duration-300 cursor-pointer ${
             isDragging
               ? "neon-border animate-pulse-glow scale-105"
               : "border-glass-border hover:border-primary/50"
-          }`}
+          } ${uploadComplete ? "border-accent" : ""}`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
+          onClick={handleBrowseClick}
         >
-          {!isUploading ? (
+          <input
+            id="file-input"
+            type="file"
+            className="hidden"
+            accept=".pdf,.doc,.docx,.txt"
+            onChange={handleFileInput}
+          />
+          {!isUploading && !uploadComplete ? (
             <>
               <div className="mb-6">
                 <div className="mx-auto w-24 h-24 rounded-full bg-gradient-primary p-6 animate-float">
@@ -77,11 +136,29 @@ export const UploadSection = () => {
                 Supports PDF, DOC, DOCX files up to 50MB
               </p>
               
-              <NeonButton variant="glow" size="lg">
+              <NeonButton variant="glow" size="lg" onClick={handleBrowseClick}>
                 <FileText className="w-5 h-5 mr-2" />
                 Browse Files
               </NeonButton>
             </>
+          ) : uploadComplete ? (
+            <div className="space-y-6">
+              <div className="mx-auto w-24 h-24 rounded-full bg-gradient-primary p-6">
+                <CheckCircle className="w-full h-full text-accent animate-pulse" />
+              </div>
+              
+              <div>
+                <h3 className="text-2xl font-semibold text-foreground mb-4">
+                  Document Uploaded Successfully!
+                </h3>
+                <p className="text-muted-foreground mb-2">
+                  Your document has been analyzed and is ready for AI review
+                </p>
+                <p className="text-sm text-accent">
+                  File: {uploadedFile?.name}
+                </p>
+              </div>
+            </div>
           ) : (
             <div className="space-y-6">
               <div className="mx-auto w-24 h-24 rounded-full bg-gradient-primary p-6">

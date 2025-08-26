@@ -6,44 +6,44 @@
 
 @layer base {
   :root {
-    /* Dark futuristic background palette */
-    --background: 240 15% 6%;
-    --foreground: 180 100% 95%;
+    /* Dark black-toned background palette */
+    --background: 0 0% 3%;
+    --foreground: 0 0% 95%;
 
     /* Glassmorphism cards */
-    --card: 240 20% 8%;
-    --card-foreground: 180 100% 95%;
-    --glass: 240 20% 12%;
-    --glass-border: 240 50% 25%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 95%;
+    --glass: 0 0% 8%;
+    --glass-border: 0 0% 20%;
 
     /* Popover elements */
-    --popover: 240 20% 8%;
-    --popover-foreground: 180 100% 95%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 95%;
 
     /* Neon accent colors */
     --primary: 200 100% 60%;
-    --primary-foreground: 240 15% 6%;
+    --primary-foreground: 0 0% 3%;
     --primary-glow: 200 100% 70%;
 
     --secondary: 270 100% 70%;
-    --secondary-foreground: 240 15% 6%;
+    --secondary-foreground: 0 0% 3%;
     --secondary-glow: 270 100% 80%;
 
     --accent: 180 100% 60%;
-    --accent-foreground: 240 15% 6%;
+    --accent-foreground: 0 0% 3%;
     --accent-glow: 180 100% 70%;
 
     /* Muted elements */
-    --muted: 240 20% 15%;
-    --muted-foreground: 180 50% 70%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 70%;
 
     /* Destructive states */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     /* Borders and inputs */
-    --border: 240 30% 20%;
-    --input: 240 30% 15%;
+    --border: 0 0% 15%;
+    --input: 0 0% 10%;
     --ring: 200 100% 60%;
 
     /* Design system tokens */
@@ -135,7 +135,7 @@
 
   body {
     @apply bg-background text-foreground font-sans;
-    background: radial-gradient(ellipse at center, hsl(var(--background)) 0%, hsl(240 20% 4%) 100%);
+    background: radial-gradient(ellipse at center, hsl(var(--background)) 0%, hsl(0 0% 1%) 100%);
     min-height: 100vh;
     overflow-x: hidden;
   }

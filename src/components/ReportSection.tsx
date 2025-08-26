@@ -140,11 +140,32 @@ export const ReportSection = () => {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <NeonButton variant="glow" size="lg" className="group">
+          <NeonButton 
+            variant="glow" 
+            size="lg" 
+            className="group"
+            onClick={() => {
+              // Create a mock PDF download
+              const element = document.createElement('a');
+              const file = new Blob(['Sample Legal Document Analysis Report\n\nThis is a demo report.'], {type: 'text/plain'});
+              element.href = URL.createObjectURL(file);
+              element.download = 'legal-analysis-report.txt';
+              document.body.appendChild(element);
+              element.click();
+              document.body.removeChild(element);
+            }}
+          >
             <Download className="w-5 h-5 mr-2 group-hover:animate-pulse" />
             Download Full Report
           </NeonButton>
-          <NeonButton variant="outline" size="lg" className="group">
+          <NeonButton 
+            variant="outline" 
+            size="lg" 
+            className="group"
+            onClick={() => {
+              window.open('data:text/html,<h1>Legal Analysis Report</h1><p>This is a demo report view.</p>', '_blank');
+            }}
+          >
             <Eye className="w-5 h-5 mr-2 group-hover:animate-pulse" />
             View in Browser
           </NeonButton>

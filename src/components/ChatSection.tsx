@@ -2,6 +2,8 @@ import { useState } from "react";
 import { NeonButton } from "@/components/ui/neon-button";
 import { Send, Mic, MicOff, Bot, User } from "lucide-react";
 import aiAvatar from "@/assets/ai-avatar.jpg";
+import aiLawyer1 from "@/assets/ai-lawyer-1.jpg";
+import aiLawyer2 from "@/assets/ai-lawyer-2.jpg";
 
 interface Message {
   id: number;
@@ -68,7 +70,7 @@ export const ChatSection = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* AI Avatar */}
-          <div className="lg:col-span-1 flex flex-col items-center justify-center">
+          <div className="lg:col-span-1 flex flex-col items-center justify-center space-y-8">
             <div className="relative">
               <div className="w-48 h-48 rounded-full overflow-hidden glass-card p-4 animate-pulse-glow">
                 <img 
@@ -81,10 +83,35 @@ export const ChatSection = () => {
                 <div className="w-3 h-3 bg-accent-foreground rounded-full"></div>
               </div>
             </div>
-            <h3 className="text-xl font-semibold text-foreground mt-6 mb-2">LegalAI Assistant</h3>
-            <p className="text-muted-foreground text-center">
-              Advanced AI trained on legal documents and case law
-            </p>
+            
+            {/* 3D AI Lawyer Models */}
+            <div className="flex space-x-4">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-lg overflow-hidden glass-card p-2 float-animation">
+                  <img 
+                    src={aiLawyer1} 
+                    alt="AI Lawyer Assistant 1"
+                    className="w-full h-full object-cover rounded-lg animate-hologram-flicker"
+                  />
+                </div>
+              </div>
+              <div className="relative">
+                <div className="w-24 h-24 rounded-lg overflow-hidden glass-card p-2 float-animation" style={{animationDelay: '1s'}}>
+                  <img 
+                    src={aiLawyer2} 
+                    alt="AI Lawyer Assistant 2"
+                    className="w-full h-full object-cover rounded-lg animate-hologram-flicker"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-foreground mb-2">LegalAI Assistant</h3>
+              <p className="text-muted-foreground">
+                Advanced AI trained on legal documents and case law
+              </p>
+            </div>
           </div>
 
           {/* Chat Interface */}
